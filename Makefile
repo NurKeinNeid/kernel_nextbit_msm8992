@@ -585,6 +585,23 @@ KBUILD_CFLAGS   += -fmodulo-sched -fmodulo-sched-allow-regmoves \
 		   -Wno-maybe-uninitialized -Wno-misleading-indentation\
 		   -Wno-array-bounds -Wno-shift-overflow
 
+# Disable format-truncation warnings
+KBUILD_CFLAGS   += $(call cc-disable-warning,format-truncation,)
+
+# Disable unused-constant-variable warnings
+KBUILD_CFLAGS	+= $(call cc-disable-warning,unused-const-variable,)
+
+# Needed to unbreak GCC 7.x and above
+#I'll be using this in the future @ejjohnson1999 InSaNiTy-Development
+KBUILD_CFLAGS   += $(call cc-option,-fno-store-merging,)
+
+# Tell gcc to never replace conditional load with a non-conditional one
+KBUILD_CFLAGS	+= $(call cc-option,--param=allow-store-data-races=0)
+
+# conserve stack if available
+# do this early so that an architecture can override it.
+KBUILD_CFLAGS   += $(call cc-option,-fconserve-stack)
+
 include $(srctree)/arch/$(SRCARCH)/Makefile
 
 ifdef CONFIG_READABLE_ASM
