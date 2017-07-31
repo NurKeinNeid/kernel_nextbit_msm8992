@@ -579,7 +579,11 @@ all: vmlinux
 
 KBUILD_CFLAGS	+= $(call cc-disable-warning,maybe-uninitialized,)
 
-KBUILD_CFLAGS	+= -O2
+KBUILD_CFLAGS	+= -O3
+
+KBUILD_CFLAGS   += -fmodulo-sched -fmodulo-sched-allow-regmoves \
+		   -Wno-maybe-uninitialized -Wno-misleading-indentation\
+		   -Wno-array-bounds -Wno-shift-overflow
 
 include $(srctree)/arch/$(SRCARCH)/Makefile
 
